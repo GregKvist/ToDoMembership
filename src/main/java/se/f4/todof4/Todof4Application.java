@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.*;
 public class Todof4Application {
 
     public static void main(String[] args) {
-        System.out.println("main is called");
+        System.out.println("Application started);
         SpringApplication.run(Todof4Application.class, args);
     }
 
     @GetMapping("/hello")
-    public	String sayHello(@RequestParam(value = "myName", defaultValue = "GetMapping") String name){
-        return String.format("Hello %s!", name);
-
+    public	String sayHello(@RequestParam(value = "myName", defaultValue = "Testing GetMapping") String name){
+        return String.format("Hello hello hello %s!", name);
     }
 }
