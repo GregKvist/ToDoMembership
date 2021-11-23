@@ -13,9 +13,9 @@ public class Todof4Application {
         SpringApplication.run(Todof4Application.class, args);
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/todo")
     public	String sayHello(@RequestParam(value = "myName", defaultValue = "GetMapping") String name){
-        return String.format("Hello %s!", name);
+        return String.format("Hello %s! Welcome to the Todo application!", name);
 
     }
 }
