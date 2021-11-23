@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class Todof4Application {
 
     public static void main(String[] args) {
-        System.out.println("Application started);
+        System.out.println("Application started!");
         SpringApplication.run(Todof4Application.class, args);
     }
 
