@@ -16,6 +16,16 @@ public class UserService {
         return repository.save(user);
     }
 
-    public List<User> getUsers() {return repository.findAll();}
+    public List<User> getUsers() {
+        return repository.findAll();
+    }
+
+    public void deleteUsers() {
+        repository.deleteAll();
+    }
+
+    public void deleteUser(int id) {
+        repository.deleteById(id);
+    }
 
 }

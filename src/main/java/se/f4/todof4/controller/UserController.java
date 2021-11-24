@@ -24,6 +24,16 @@ public class UserController {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete_all")
+    public @ResponseBody ResponseEntity<Void> deleteUsers() {
+        service.deleteUsers();
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
 
+    @DeleteMapping("/delete/{id}")
+    public @ResponseBody ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
+        service.deleteUser(id);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
 
 }
