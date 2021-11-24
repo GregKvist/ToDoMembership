@@ -24,6 +24,11 @@ public class UserController {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
     }
 
+    @PutMapping("/updateUser")
+    public String updateUser(@RequestBody User user){
+        return service.updateUser(user);
+    }
+
     @DeleteMapping("/delete_all")
     public @ResponseBody ResponseEntity<Void> deleteUsers() {
         service.deleteUsers();
