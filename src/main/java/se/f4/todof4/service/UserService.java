@@ -28,7 +28,7 @@ public class UserService {
     public boolean deleteUser(int id) {
         Optional<User> isFound = repository.findById(id);
 
-        if (isFound.isPresent() && isFound.get() != null) {
+        if (isFound.isPresent()) {
             // The id exists
             repository.deleteById(id);
             return true;
@@ -37,7 +37,7 @@ public class UserService {
         }
     }
 
-    public String updateUser(User user) {
+    public String updateUser(User user){
         // Check first if user exist, if yes: change userFound to "true" and update user.
         // If not, userFound will stay "false" and trigger an error message
         boolean userFound = false;
