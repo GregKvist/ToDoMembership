@@ -24,10 +24,10 @@ public class UserController {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
     }
 
-    @PutMapping("/updateUser")
-    public String updateUser(@RequestBody User user){
-        return service.updateUser(user);
-    }
+//    @PutMapping("/updateUser")
+//    public String updateUser(@RequestBody User user){
+//        return service.updateUser(user);
+//    }
 
     @DeleteMapping("/delete_all")
     public @ResponseBody ResponseEntity<Void> deleteUsers() {
@@ -41,4 +41,17 @@ public class UserController {
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/update_by_id/{id}")
+    public @ResponseBody
+    ResponseEntity<Void> updateUser(@PathVariable("id") Integer id,
+    @RequestParam(required = false) String name,
+    @RequestParam(required = false) String email,
+    @RequestParam(required = false) String password) {
+
+        if (service.updateUser(id,name, email, password)) {
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
