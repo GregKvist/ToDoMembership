@@ -28,8 +28,16 @@ public class UserService {
         repository.deleteAll();
     }
 
-    public void deleteUser(int id) {
-        repository.deleteById(id);
+    public boolean deleteUser(int id) {
+        Optional<User> isFound = repository.findById(id);
+
+        if (isFound.isPresent()) {
+            // The id exists
+            repository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 //    Enklaste updateUser utan HTTP status, låt stå/Cicci
