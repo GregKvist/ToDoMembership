@@ -32,13 +32,13 @@ public class UserController {
     @DeleteMapping("/delete_all")
     public @ResponseBody ResponseEntity<Void> deleteUsers() {
         service.deleteUsers();
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public @ResponseBody ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
         service.deleteUser(id);
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }
