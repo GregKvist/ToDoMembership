@@ -16,29 +16,54 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/signup")
-    public User signUp(@RequestBody User user) {return service.createUser(user);}
+    public User signUp(@RequestBody User user) {
+        return service.createUser(user);
+    }
 
 
     @GetMapping("/users")
-    public @ResponseBody ResponseEntity<List> getUsers() {
+    public @ResponseBody
+    ResponseEntity<List> getUsers() {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
     }
 
     @PutMapping("/updateUser")
-    public String updateUser(@RequestBody User user){
+    public String updateUser(@RequestBody User user) {
         return service.updateUser(user);
     }
 
-    @DeleteMapping("/delete_all")
-    public @ResponseBody ResponseEntity<Void> deleteUsers() {
-        service.deleteUsers();
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/delete/{id}")
+    public @ResponseBody
+    ResponseEntity<Void> deleteUser(@PathVariable("id") String stringId) {
+        int id;
+        try {
+            id = Integer.parseInt(stringId);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+
+        if (service.deleteUser(id)) {
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+        /* Coding style: Is it better & clearer to introduce 2 variables and 3 lines of code this way?
+        boolean isDeleted = service.deleteUser(id);
+        HttpStatus httpStatusCode;
+        if (isDeleted) {
+            httpStatusCode = HttpStatus.OK;
+        } else {
+            httpStatusCode = HttpStatus.NOT_FOUND;
+        }
+        return new ResponseEntity<Void>(httpStatusCode);
+        */
     }
 
-    @DeleteMapping("/delete/{id}")
-    public @ResponseBody ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
-        service.deleteUser(id);
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/delete_all")
+    public @ResponseBody
+    ResponseEntity<Void> deleteUsers() {
+        service.deleteUsers();
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }
