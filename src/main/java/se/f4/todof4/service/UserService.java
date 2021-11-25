@@ -6,6 +6,7 @@ import se.f4.todof4.entity.User;
 import se.f4.todof4.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,17 +25,25 @@ public class UserService {
         repository.deleteAll();
     }
 
-    public void deleteUser(int id) {
-        repository.deleteById(id);
+    public boolean deleteUser(int id) {
+        Optional<User> isFound = repository.findById(id);
+
+        if (isFound.isPresent() && isFound.get() != null) {
+            // The id exists
+            repository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public String updateUser(User user){
+    public String updateUser(User user) {
         // Check first if user exist, if yes: change userFound to "true" and update user.
         // If not, userFound will stay "false" and trigger an error message
         boolean userFound = false;
 
-        for (User currentUser: getUsers()) {
-            if(currentUser.getId() == user.getId()){
+        for (User currentUser : getUsers()) {
+            if (currentUser.getId() == user.getId()) {
                 userFound = true;
                 currentUser.setName(user.getName());
                 currentUser.setEmail(user.getEmail());
@@ -44,9 +53,9 @@ public class UserService {
         }
 
         // Check final status of userFound
-        if(!userFound){
+        if (!userFound) {
             return "No such user exist, check entered id number.";
-        }else {
+        } else {
             return "User updated successfully.";
         }
     }
