@@ -19,32 +19,32 @@ public class UserControllerTL {
     @Autowired
     private UserService service;
 
-@PostMapping("/signup")
-public User signUp(@RequestBody User user) {return service.createUser(user);}
-
-
-
-
+    @PostMapping("/signup")
+    public User signUp(@RequestBody User user) {
+        return service.createUser(user);
+    }
 
     @GetMapping("/users")
-    public @ResponseBody
-    ResponseEntity<List> getUsers() {
-        return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
+    public String getUsers(Model model) {
+        model.addAttribute("listUsers", service.getUsers());
+        return "users";
     }
-
+/*
     @PutMapping("/updateUser")
-    public String updateUser(@RequestBody User user){
+    public String updateUser(@RequestBody User user) {
         return service.updateUser(user);
     }
-
+*/
     @DeleteMapping("/delete_all")
-    public @ResponseBody ResponseEntity<Void> deleteUsers() {
+    public @ResponseBody
+    ResponseEntity<Void> deleteUsers() {
         service.deleteUsers();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
+    public @ResponseBody
+    ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
         service.deleteUser(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
