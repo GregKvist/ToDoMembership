@@ -43,7 +43,7 @@ public class UserController {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
 
-        if (service.deleteUser(id)) {
+        if (service.deleteUser(id).isPresent()) {
             return new ResponseEntity<Void>(HttpStatus.OK);
         } else {
             return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
