@@ -27,10 +27,13 @@ public class UserService {
     public void saveUser (User user){ repository.save(user);}
 
 
-    public void deleteUsers() {
+    public List<User> deleteUsers() {
+        List<User> usersToDelete = repository.findAll();
         repository.deleteAll();
+        return usersToDelete;
     }
 
+    public Optional<User> deleteUser(int id) {
     public User getUserById(int id){
         Optional<User> optional = repository.findById(id);
         User user = null;
@@ -44,14 +47,11 @@ public class UserService {
 
     public boolean deleteUser(int id) {
         Optional<User> isFound = repository.findById(id);
-
         if (isFound.isPresent()) {
             // The id exists
             repository.deleteById(id);
-            return true;
-        } else {
-            return false;
         }
+        return isFound;
     }
 
 //    Enklaste updateUser utan HTTP status, låt stå/Cicci

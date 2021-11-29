@@ -6,11 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import se.f4.todof4.entity.User;
 import se.f4.todof4.service.UserService;
 
-@Controller
+import java.util.List;
 
+@Controller
+@RequestMapping("/tl")
 public class UserControllerTL {
 
     @Autowired
@@ -26,29 +29,28 @@ public class UserControllerTL {
         model.addAttribute("listUsers", service.getUsers());
         return "users";
     }
-/*
-    @PutMapping("/updateUser")
-    public String updateUser(@RequestBody User user) {
-        return service.updateUser(user);
-    }
-*/
-    @DeleteMapping("/delete_all")
-    public @ResponseBody
-    ResponseEntity<Void> deleteUsers() {
+
+    @GetMapping("/delete")
+    public String deleteUsers(Model model) {
+        model.addAttribute("deleteUsers", service.deleteUsers());
         service.deleteUsers();
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return "delete";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public @ResponseBody ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
-        service.deleteUser(id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+    @GetMapping("/delete-user/{id}")
+    public String deleteUser(Model model, @PathVariable("id") String stringId) {
+        System.out.println("stringId = " + stringId);
+        int id;
+        try {
+            id = Integer.parseInt(stringId);
+        } catch (NumberFormatException e) {
+            return "error";
+        }
+        model.addAttribute("deleteUser", service.deleteUser(id));
+
+        return "delete-user";
     }
-   /* @GetMapping("/users")
-    public String viewHomePage (Model model){
-    model.addAttribute("listUser", service.getUsers());
-    return "index";
-    }*/
+
    @GetMapping("/addUsers")
     public String addUsers(Model model){
        User user = new User();
@@ -69,10 +71,4 @@ public class UserControllerTL {
             model.addAttribute("user", user);
             return "update_user";
     }
-
-
-
-
-
-
 }
