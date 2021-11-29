@@ -24,13 +24,14 @@ public class UserService {
         return repository.findAll();
     }
 
-    public void deleteUsers() {
+    public List<User> deleteUsers() {
+        List<User> usersToDelete = repository.findAll();
         repository.deleteAll();
+        return usersToDelete;
     }
 
     public boolean deleteUser(int id) {
         Optional<User> isFound = repository.findById(id);
-
         if (isFound.isPresent()) {
             // The id exists
             repository.deleteById(id);
@@ -112,6 +113,5 @@ public class UserService {
             return false;
         }
     }// End bracket for updateUser()
-
 
 }//End bracket for UserService

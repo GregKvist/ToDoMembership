@@ -7,7 +7,7 @@
 <body>
 <div align="center">
 
-    <h1> User List</h1>
+    <h1> All these users have been DELETED!</h1>
     <table>
         <thead>
         <tr>
@@ -17,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user: ${listUsers}">
+        <tr th:each="user: ${deleteUsers}">
             <td th:text="${user.name}"></td>
             <td th:text="${user.email}"></td>
             <td th:text="${user.password}"></td>

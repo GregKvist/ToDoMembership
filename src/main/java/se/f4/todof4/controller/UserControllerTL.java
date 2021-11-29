@@ -29,25 +29,26 @@ public class UserControllerTL {
         model.addAttribute("listUsers", service.getUsers());
         return "users";
     }
-/*
-    @PutMapping("/updateUser")
-    public String updateUser(@RequestBody User user) {
-        return service.updateUser(user);
-    }
-*/
-    @DeleteMapping("/delete_all")
-    public @ResponseBody
-    ResponseEntity<Void> deleteUsers() {
+
+    @GetMapping("/delete")
+    public String deleteUsers(Model model) {
+        model.addAttribute("deleteUsers", service.deleteUsers());
         service.deleteUsers();
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return "delete";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public @ResponseBody
-    ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
-        service.deleteUser(id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
+    @GetMapping("/delete-user/{id}")
+    public String deleteUser(Model model, @PathVariable("id") String stringId) {
+        System.out.println("stringId = " + stringId);
+        int id;
+        try {
+            id = Integer.parseInt(stringId);
+        } catch (NumberFormatException e) {
+            return "error";
+        }
+        model.addAttribute("deleteUser", service.deleteUser(id));
 
+        return "delete-user";
+    }
 
 }

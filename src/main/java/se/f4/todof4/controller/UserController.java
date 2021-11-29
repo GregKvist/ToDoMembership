@@ -8,6 +8,7 @@ import se.f4.todof4.entity.User;
 import se.f4.todof4.service.UserService;
 
 import java.util.List;
+//@RequestMapping("/rest")
 
 @RestController
 public class UserController {
