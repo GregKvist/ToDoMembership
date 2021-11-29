@@ -6,14 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import se.f4.todof4.entity.User;
 import se.f4.todof4.service.UserService;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/tl")
+
 public class UserControllerTL {
 
     @Autowired
@@ -43,11 +40,39 @@ public class UserControllerTL {
     }
 
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody
-    ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
+    public @ResponseBody ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
         service.deleteUser(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+   /* @GetMapping("/users")
+    public String viewHomePage (Model model){
+    model.addAttribute("listUser", service.getUsers());
+    return "index";
+    }*/
+   @GetMapping("/addUsers")
+    public String addUsers(Model model){
+       User user = new User();
+       model.addAttribute("user", user);
+       return "addUsers";
+    }
+
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user){
+       //save user to database
+        service.saveUser(user);
+        return"redirect:/users";
+    }
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFOrmForUpdate(@PathVariable (value= "id") int id, Model model){
+
+            User user = service.getUserById(id);
+            model.addAttribute("user", user);
+            return "update_user";
+    }
+
+
+
+
 
 
 }

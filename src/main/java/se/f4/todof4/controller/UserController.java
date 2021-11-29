@@ -10,6 +10,7 @@ import se.f4.todof4.service.UserService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/rest")
 public class UserController {
 
     @Autowired

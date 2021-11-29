@@ -23,9 +23,23 @@ public class UserService {
     public List<User> getUsers() {
         return repository.findAll();
     }
+    //save user
+    public void saveUser (User user){ repository.save(user);}
+
 
     public void deleteUsers() {
         repository.deleteAll();
+    }
+
+    public User getUserById(int id){
+        Optional<User> optional = repository.findById(id);
+        User user = null;
+        if(optional.isPresent()){
+            user = optional.get();
+        }else{
+            throw new RuntimeException("User not found for id"+ id);
+        }
+        return user;
     }
 
     public boolean deleteUser(int id) {
