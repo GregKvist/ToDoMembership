@@ -33,7 +33,6 @@ public class UserService {
         return usersToDelete;
     }
 
-    public Optional<User> deleteUser(int id) {
     public User getUserById(int id){
         Optional<User> optional = repository.findById(id);
         User user = null;
@@ -45,7 +44,7 @@ public class UserService {
         return user;
     }
 
-    public boolean deleteUser(int id) {
+    public Optional<User> deleteUser(int id) {
         Optional<User> isFound = repository.findById(id);
         if (isFound.isPresent()) {
             // The id exists
