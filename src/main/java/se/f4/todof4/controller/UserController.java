@@ -3,6 +3,7 @@ package se.f4.todof4.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import se.f4.todof4.entity.User;
 import se.f4.todof4.service.UserService;
@@ -10,6 +11,7 @@ import se.f4.todof4.service.UserService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/rest")
 public class UserController {
 
     @Autowired
@@ -17,6 +19,9 @@ public class UserController {
 
     @PostMapping("/signup")
     public User signUp(@RequestBody User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return service.createUser(user);
     }
 
