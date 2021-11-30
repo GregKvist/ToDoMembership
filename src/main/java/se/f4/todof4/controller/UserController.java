@@ -19,9 +19,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public User signUp(@RequestBody User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         return service.createUser(user);
     }
 
@@ -47,7 +44,7 @@ public class UserController {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
 
-        if (service.deleteUser(id)) {
+        if (service.deleteUser(id).isPresent()) {
             return new ResponseEntity<Void>(HttpStatus.OK);
         } else {
             return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);

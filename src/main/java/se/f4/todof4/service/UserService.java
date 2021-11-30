@@ -2,6 +2,7 @@ package se.f4.todof4.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.f4.todof4.entity.User;
@@ -17,14 +18,15 @@ public class UserService {
     private UserRepository repository;
 
     public User createUser(User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return repository.save(user);
     }
 
     public List<User> getUsers() {
         return repository.findAll();
     }
-    //save user
-    public void saveUser (User user){ repository.save(user);}
 
 
     public List<User> deleteUsers() {
