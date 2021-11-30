@@ -1,8 +1,9 @@
 package se.f4.todof4.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 
