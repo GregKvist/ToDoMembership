@@ -16,8 +16,6 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-
-
     public User createUser(User user) {
         return repository.save(user);
     }
@@ -25,21 +23,34 @@ public class UserService {
     public List<User> getUsers() {
         return repository.findAll();
     }
+    //save user
+    public void saveUser (User user){ repository.save(user);}
 
-    public void deleteUsers() {
+
+    public List<User> deleteUsers() {
+        List<User> usersToDelete = repository.findAll();
         repository.deleteAll();
+        return usersToDelete;
     }
 
-    public boolean deleteUser(int id) {
-        Optional<User> isFound = repository.findById(id);
+    public User getUserById(int id){
+        Optional<User> optional = repository.findById(id);
+        User user = null;
+        if(optional.isPresent()){
+            user = optional.get();
+        }else{
+            throw new RuntimeException("User not found for id"+ id);
+        }
+        return user;
+    }
 
+    public Optional<User> deleteUser(int id) {
+        Optional<User> isFound = repository.findById(id);
         if (isFound.isPresent()) {
             // The id exists
             repository.deleteById(id);
-            return true;
-        } else {
-            return false;
         }
+        return isFound;
     }
 
 //    Enklaste updateUser utan HTTP status, låt stå/Cicci

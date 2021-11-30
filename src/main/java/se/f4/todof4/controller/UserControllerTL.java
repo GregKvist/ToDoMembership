@@ -14,7 +14,6 @@ import se.f4.todof4.service.UserService;
 import java.util.List;
 
 @Controller
-
 public class UserControllerTL {
 
     @Autowired
