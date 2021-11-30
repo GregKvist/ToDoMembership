@@ -1,6 +1,7 @@
 package se.f4.todof4.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,6 @@ public class UserController {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
     }
 
-//    @PutMapping("/updateUser")
-//    public String updateUser(@RequestBody User user){
-//        return service.updateUser(user);
-//    }
 
     @DeleteMapping("/delete/{id}")
     public @ResponseBody
@@ -58,17 +55,22 @@ public class UserController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @PutMapping("/update_by_id/{id}")
+    @PutMapping("/update-by-id/{id}")
     public @ResponseBody
-    ResponseEntity<Void> updateUser(@PathVariable("id") Integer id,
+    ResponseEntity<User> updateUser(@PathVariable("id") Integer id,
     @RequestParam(required = false) String name,
     @RequestParam(required = false) String email,
     @RequestParam(required = false) String password) {
 
+        HttpHeaders header = new HttpHeaders();
+        header.add("description", "Update user");
+
+
         if (service.updateUser(id,name, email, password)) {
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            User body = service.getUserById(id);
+            return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
         } else {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
