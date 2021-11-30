@@ -24,6 +24,7 @@ public class UserControllerTL {
     public String registerUser(Model model){
         User user = new User();
         model.addAttribute("user", user);
+        model.addAttribute("title", "Sign up");
         return "addUsers";
     }
 
@@ -59,6 +60,7 @@ public class UserControllerTL {
     public String addUsers(Model model){
        User user = new User();
        model.addAttribute("user", user);
+       model.addAttribute("title", "Add a user");
        return "addUsers";
     }
 
