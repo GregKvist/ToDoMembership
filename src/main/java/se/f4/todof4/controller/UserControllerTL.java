@@ -22,12 +22,10 @@ public class UserControllerTL {
 
 
     @GetMapping("/signup")
-    public String signUp(User user, Model model) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        model.addAttribute("user", service.createUser(user));
-        return "signup_form";
+    public String registerUser(Model model){
+        User user = new User();
+        model.addAttribute("user", user);
+        return "addUsers";
     }
 
 
@@ -36,25 +34,46 @@ public class UserControllerTL {
         model.addAttribute("listUsers", service.getUsers());
         return "users";
     }
-/*
-    @PutMapping("/updateUser")
-    public String updateUser(@RequestBody User user) {
-        return service.updateUser(user);
-    }
-*/
-    @DeleteMapping("/delete_all")
-    public @ResponseBody
-    ResponseEntity<Void> deleteUsers() {
+
+    @GetMapping("/delete")
+    public String deleteUsers(Model model) {
+        model.addAttribute("deleteUsers", service.deleteUsers());
         service.deleteUsers();
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return "delete";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public @ResponseBody
-    ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id) {
-        service.deleteUser(id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+    @GetMapping("/delete-user/{id}")
+    public String deleteUser(Model model, @PathVariable("id") String stringId) {
+        System.out.println("stringId = " + stringId);
+        int id;
+        try {
+            id = Integer.parseInt(stringId);
+        } catch (NumberFormatException e) {
+            return "error";
+        }
+        model.addAttribute("deleteUser", service.deleteUser(id));
+
+        return "delete-user";
     }
 
+   @GetMapping("/addUsers")
+    public String addUsers(Model model){
+       User user = new User();
+       model.addAttribute("user", user);
+       return "addUsers";
+    }
 
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user){
+       //save user to database
+        service.createUser(user);
+        return"redirect:/users";
+    }
+    @GetMapping("/showFormForUpdate/{id}")
+    public String showFOrmForUpdate(@PathVariable (value= "id") int id, Model model){
+
+            User user = service.getUserById(id);
+            model.addAttribute("user", user);
+            return "update_user";
+    }
 }
