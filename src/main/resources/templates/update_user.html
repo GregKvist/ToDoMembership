@@ -17,6 +17,7 @@
           method = "POST">
 
         <!-- Added hidden form field to handle update -->
+        <input type = "text" th:field="*{id}" class="form-control mb-4 col-4" value="${user.id}">
 
         <input type = "text" th:field="*{name}" class="form-control mb-4 col-4">
 
