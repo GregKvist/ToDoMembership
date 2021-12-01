@@ -23,6 +23,25 @@ public class UserController {
         return service.createUser(user);
     }
 
+    // Ciccis new PostMapping for sign up, not complete yet
+    @PostMapping("/signup-email-check")
+    public @ResponseBody
+    ResponseEntity<User> createUserWithEmailCheck(@RequestBody User user) {
+
+        HttpHeaders header = new HttpHeaders();
+        header.add("description", "Register user");
+
+
+        if (service.createUserEmailCheck(user)) {
+            User body = service.getUserById(user.getId());
+            return ResponseEntity.status(HttpStatus.OK).headers(header).build();
+        } else {
+            HttpHeaders errorHeader = new HttpHeaders();
+            header.add("Error message", "Given e-mail address is not valid.");// Wrong? Maybe better with: errorHeader.add(...bla bla)???
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(errorHeader).build();
+        }
+    }
+
 
     @GetMapping("/users")
     public @ResponseBody
