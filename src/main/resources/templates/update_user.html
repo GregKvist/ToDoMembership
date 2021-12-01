@@ -18,16 +18,16 @@
 
         <!-- Added hidden form field to handle update -->
         <label for="id">id</label>
-        <input type = "text" th:field="*{id}" id="id" class="form-control mb-4 col-4">
+        <input type = "text" readonly th:field="*{id}" id="id" class="form-control mb-4 col-4">
 
         <label for="name">name</label>
-        <input type = "text" th:field="*{name}" id="name" class="form-control mb-4 col-4">
+        <input type = "text" required th:field="*{name}" id="name" class="form-control mb-4 col-4">
 
         <label for="name">e-mail</label>
-        <input type = "text" th:field="*{email}" id="e-mail" class="form-control mb-4 col-4">
+        <input type = "email" required th:field="*{email}" id="e-mail" class="form-control mb-4 col-4">
 
         <label for="password">password</label>
-        <input type = "text" th:field="*{password}" id="password" class="form-control mb-4 col-4">
+        <input type = "password" minlength="3" required th:field="*{password}" id="password" class="form-control mb-4 col-4">
 
         <button type="submit" class="btn btn-info col-2">Update User</button>
 

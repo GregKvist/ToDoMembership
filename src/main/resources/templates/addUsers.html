@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeLeaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>KontoSystem</title>
+    <title th:text="'KontoSystem - ' + @{${title}}"></title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
@@ -11,19 +11,19 @@
   <div class="container">
 
   <h1>KontoSystem</h1>
-      <h2> Add user</h2>
+      <h2 th:text="${title}"></h2>
 
       <form action="#" th:action="@{/saveUser}" th:object = "${user}" method = "POST">
-      <input type = "text" th:field="*{name}"
+      <input type = "text" required th:field="*{name}"
              placeholder="User name" class="form-control mb-4 col-4">
 
-      <input type = "text" th:field="*{email}"
+      <input type = "email"  required th:field="*{email}"
              placeholder="User Email" class="form-control mb-4 col-4">
 
-      <input type = "text" th:field="*{password}"
+      <input type = "password"  minlength="3" required th:field="*{password}"
              placeholder="User Password" class="form-control mb-4 col-4">
 
-      <button type="submit" class="btn btn-info col-2">Save User</button>
+      <button type="submit" class="btn btn-info col-2" th:text="${title}"></button>
 
       </form>
   </div>
