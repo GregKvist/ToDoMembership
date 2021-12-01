@@ -43,7 +43,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/users")
+    @GetMapping(value = "/users", produces = {"application/json","application/xml"})
     public @ResponseBody
     ResponseEntity<List> getUsers() {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
@@ -74,16 +74,16 @@ public class UserController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @PutMapping("/update-by-id/{id}")
+    @PutMapping(value = "/update-by-id/{id}", produces = {"application/json", "application/xml"})
     public @ResponseBody
     ResponseEntity<User> updateUser(@PathVariable("id") Integer id,
     @RequestParam(required = false) String name,
     @RequestParam(required = false) String email,
     @RequestParam(required = false) String password) {
 
+        // Create header for ResponseEntity
         HttpHeaders header = new HttpHeaders();
         header.add("description", "Update user");
-
 
         if (service.updateUser(id,name, email, password)) {
             User body = service.getUserById(id);
