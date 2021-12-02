@@ -21,7 +21,18 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody User user) {
-        return new ResponseEntity<>(service.createUser(user), HttpStatus.OK);
+
+        HttpHeaders header = new HttpHeaders();
+           if(service.createUser(user)==null){
+            header = new HttpHeaders();
+            header.add("Error message", "Given e-mail address is not valid.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(header).build();
+            }else{
+               service.createUser(user);
+               User body = service.getUserById(user.getId());
+               header.add("Description", "Success! User created!");
+               return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
+           }
     }
 
     @GetMapping("/get/{userId}")
@@ -30,34 +41,12 @@ public class UserController {
             User body = service.getUserById(userId);
             HttpHeaders header = new HttpHeaders();
             header.add("description", "get user by id");
-
             return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
-
 
         }catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-    // Ciccis new PostMapping for sign up, not complete yet
-    @PostMapping("/signup-email-check")
-    public @ResponseBody
-    ResponseEntity<User> createUserWithEmailCheck(@RequestBody User user) {
-
-        HttpHeaders header = new HttpHeaders();
-        header.add("description", "Register user");
-
-
-        if (service.createUserEmailCheck(user)) {
-            User body = service.getUserById(user.getId());
-            return ResponseEntity.status(HttpStatus.OK).headers(header).build();
-        } else {
-            HttpHeaders errorHeader = new HttpHeaders();
-            header.add("Error message", "Given e-mail address is not valid.");// Wrong? Maybe better with: errorHeader.add(...bla bla)???
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(errorHeader).build();
-        }
-    }
-
 
     @GetMapping(value = "/users", produces = {"application/json","application/xml"})
     public @ResponseBody

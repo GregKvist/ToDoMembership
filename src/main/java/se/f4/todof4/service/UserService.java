@@ -39,15 +39,16 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        user = encodedPassword(user);
-        if(createUserEmailCheck(user)) {
-            return repository.save(user);
+
+       if(createUserEmailCheck(user)) {
+           user = encodedPassword(user);
+           return repository.save(user);
         }else {
             return null;
         }
     }
 
-    //Ciccis start of e-mail check to avoid signing up with already existing email.
+    //e-mail check to avoid signing up with already existing email.
     public boolean createUserEmailCheck(User user){
         //            Check to see if email is already in use by other user
         Optional<User> userOptional = repository.findUserByEmail(user.getEmail());
@@ -55,7 +56,6 @@ public class UserService {
             System.out.println("email taken");
             return false;
         }else{
-           // repository.save(user);
             return true;
         }
     }

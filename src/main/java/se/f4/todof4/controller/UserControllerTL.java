@@ -24,9 +24,6 @@ public class UserControllerTL {
         return "addUsers";
     }
 
-
-
-
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute("listUsers", service.getUsers());
@@ -65,19 +62,10 @@ public class UserControllerTL {
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user){
        //save user to database
-        service.createUser(user);
-        return"redirect:/users";
-    }
-
-    // Testar POST med email check/Cicci
-    @PostMapping("/saveUserEmailCheck")
-    public String saveUserWithEmailCheck(@ModelAttribute("user") User user){
-        //save user to database
-        if(service.createUserEmailCheck(user)){
-        return"redirect:/users";
-        }else{
+        if(service.createUser(user)==null){
             return "redirect:/nonvalid-email";
         }
+        return"redirect:/users";
     }
 
     @GetMapping("/nonvalid-email")
