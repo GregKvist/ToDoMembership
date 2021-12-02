@@ -3,7 +3,6 @@ package se.f4.todof4.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +13,7 @@ import se.f4.todof4.service.UserService;
 import java.util.List;
 
 @Controller
+
 public class UserControllerTL {
 
     @Autowired

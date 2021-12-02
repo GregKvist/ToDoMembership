@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //.csrf().disable() // För att kunna köra POST/PUT/DELETE via postman måste denna vara aktiv.
+                .csrf().disable() // För att kunna köra POST/PUT/DELETE via postman måste denna vara aktiv.
                 .authorizeRequests()
                 .antMatchers("/users").authenticated()
                 .anyRequest().permitAll()

@@ -10,6 +10,7 @@ import se.f4.todof4.entity.User;
 import se.f4.todof4.service.UserService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/rest")
@@ -18,11 +19,29 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PostMapping("/signup")
-    public User signUp(@RequestBody User user) {
-        return service.createUser(user);
-    }
+   // @PostMapping("/signup")
+    //public User signUp(@RequestBody User user) {
+      //  return service.createUser(user);
+    //}
 
+    @PostMapping("/signup")
+    public ResponseEntity<User> signUp(@RequestBody User user) {
+        return new ResponseEntity<>(service.createUser(user), HttpStatus.OK);
+    }
+    @GetMapping("/get/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable int userId) {
+        try{
+            User body = service.getUserById(userId);
+            HttpHeaders header = new HttpHeaders();
+            header.add("description", "get user by id");
+
+            return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
+
+
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
     @GetMapping("/users")
     public @ResponseBody
@@ -73,4 +92,5 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 }
