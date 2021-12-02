@@ -67,14 +67,13 @@ public class UserService {
     }
 
     public User getUserById(int id){
-        Optional<User> optional = repository.findById(id);
-        User user = null;
-        if(optional.isPresent()){
-            user = optional.get();
-        }else{
-            throw new RuntimeException("User not found for id"+ id);
-        }
-        return user;
+
+            //  Optional<User> optional = repository.findById(id);
+            User user = repository.findById(id).get();
+
+            return user;
+
+
     }
 
     public Optional<User> deleteUser(int id) {

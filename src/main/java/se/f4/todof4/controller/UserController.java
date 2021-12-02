@@ -9,6 +9,7 @@ import se.f4.todof4.entity.User;
 import se.f4.todof4.service.UserService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -18,8 +19,22 @@ public class UserController {
     @Autowired
     private UserService service;
     @PostMapping("/signup")
-    public User signUp(@RequestBody User user) {
-        return service.createUser(user);
+    public ResponseEntity<User> signUp(@RequestBody User user) {
+        return new ResponseEntity<>(service.createUser(user), HttpStatus.OK);
+    }
+    @GetMapping("/get/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable int userId) {
+        try{
+            User body = service.getUserById(userId);
+            HttpHeaders header = new HttpHeaders();
+            header.add("description", "get user by id");
+
+            return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
+
+
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     // Ciccis new PostMapping for sign up, not complete yet
@@ -53,24 +68,30 @@ public class UserController {
     public @ResponseBody
     ResponseEntity<Void> deleteUser(@PathVariable("id") String stringId) {
         int id;
+        HttpHeaders httpHeader = new HttpHeaders();
         try {
             id = Integer.parseInt(stringId);
         } catch (NumberFormatException e) {
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            httpHeader.add("Error message", "the supplied user id = '" + stringId + "' is not parseable as an integer");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(httpHeader).build();
         }
 
         if (service.deleteUser(id).isPresent()) {
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            httpHeader.add("description", "the user id = " + stringId + " is successfully deleted");
+            return ResponseEntity.status(HttpStatus.OK).headers(httpHeader).build();
         } else {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+            httpHeader.add("Error message", "the supplied user id = " + stringId + " does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeader).build();
         }
     }
 
     @DeleteMapping("/delete_all")
     public @ResponseBody
     ResponseEntity<Void> deleteUsers() {
+        HttpHeaders httpHeader = new HttpHeaders();
         service.deleteUsers();
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        httpHeader.add("description", "all users have successfully been deleted");
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeader).build();
     }
 
     @PutMapping(value = "/update-by-id/{id}", produces = {"application/json", "application/xml"})
@@ -83,6 +104,7 @@ public class UserController {
         // Create header for ResponseEntity
         HttpHeaders header = new HttpHeaders();
         header.add("description", "Update user");
+
 
         if (service.updateUser(id,name, email, password)) {
             User body = service.getUserById(id);
