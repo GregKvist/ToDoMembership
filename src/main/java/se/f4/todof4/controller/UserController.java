@@ -19,11 +19,6 @@ public class UserController {
     @Autowired
     private UserService service;
 
-   // @PostMapping("/signup")
-    //public User signUp(@RequestBody User user) {
-      //  return service.createUser(user);
-    //}
-
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody User user) {
         return new ResponseEntity<>(service.createUser(user), HttpStatus.OK);
@@ -43,7 +38,27 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users")
+    // Ciccis new PostMapping for sign up, not complete yet
+    @PostMapping("/signup-email-check")
+    public @ResponseBody
+    ResponseEntity<User> createUserWithEmailCheck(@RequestBody User user) {
+
+        HttpHeaders header = new HttpHeaders();
+        header.add("description", "Register user");
+
+
+        if (service.createUserEmailCheck(user)) {
+            User body = service.getUserById(user.getId());
+            return ResponseEntity.status(HttpStatus.OK).headers(header).build();
+        } else {
+            HttpHeaders errorHeader = new HttpHeaders();
+            header.add("Error message", "Given e-mail address is not valid.");// Wrong? Maybe better with: errorHeader.add(...bla bla)???
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(errorHeader).build();
+        }
+    }
+
+
+    @GetMapping(value = "/users", produces = {"application/json","application/xml"})
     public @ResponseBody
     ResponseEntity<List> getUsers() {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
@@ -74,13 +89,14 @@ public class UserController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @PutMapping("/update-by-id/{id}")
+    @PutMapping(value = "/update-by-id/{id}", produces = {"application/json", "application/xml"})
     public @ResponseBody
     ResponseEntity<User> updateUser(@PathVariable("id") Integer id,
     @RequestParam(required = false) String name,
     @RequestParam(required = false) String email,
     @RequestParam(required = false) String password) {
 
+        // Create header for ResponseEntity
         HttpHeaders header = new HttpHeaders();
         header.add("description", "Update user");
 
@@ -92,5 +108,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
 }

@@ -24,10 +24,22 @@ public class UserService {
         return repository.save(user);
     }
 
+    //Ciccis start of e-mail check to avoid signing up with already existing email.
+    public boolean createUserEmailCheck(User user){
+        //            Check to see if email is already in use by other user
+        Optional<User> userOptional = repository.findUserByEmail(user.getEmail());
+        if (userOptional.isPresent()) {
+            System.out.println("email taken");
+            return false;
+        }else{
+            repository.save(user);
+            return true;
+        }
+    }
+
     public List<User> getUsers() {
         return repository.findAll();
     }
-
 
     public List<User> deleteUsers() {
         List<User> usersToDelete = repository.findAll();

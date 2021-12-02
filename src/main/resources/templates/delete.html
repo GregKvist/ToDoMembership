@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>KontoSystem</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container my-2">
+
+    <h1>KontoSystem</h1>
+    <h2>Delete all users</h2>
+    <del>
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+            <tr>
+                <th>User Name</th>
+                <th>User Email</th>
+                <th>User Password</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user: ${deleteUsers}">
+
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.password}"></td>
+                <td><a th:href="@{showFormForUpdate/{id}(id=${user.id})}" class="btn btn-primary">Update</a></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </del>
+    <h2> All users have been REMOVED!</h2>
+
+</div>
+</body>
+</html>
+
