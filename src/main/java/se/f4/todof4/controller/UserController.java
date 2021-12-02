@@ -65,6 +65,11 @@ public class UserController {
         return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/users-xml", produces = {"application/xml"})
+    public @ResponseBody
+    ResponseEntity<List> getUsersXml() {
+        return new ResponseEntity<List>(service.getUsers(), HttpStatus.OK);
+    }
 
     @DeleteMapping("/delete/{id}")
     public @ResponseBody
