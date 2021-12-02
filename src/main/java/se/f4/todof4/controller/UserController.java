@@ -44,8 +44,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
 
         }catch (NoSuchElementException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            HttpHeaders header = new HttpHeaders();
+            header.add("Error message", "User does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers( header).build();
         }
+
+
     }
 
     @GetMapping(value = "/users", produces = {"application/json","application/xml"})
