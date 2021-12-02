@@ -40,7 +40,11 @@ public class UserService {
 
     public User createUser(User user) {
         user = encodedPassword(user);
-        return repository.save(user);
+        if(createUserEmailCheck(user)) {
+            return repository.save(user);
+        }else {
+            return null;
+        }
     }
 
     //Ciccis start of e-mail check to avoid signing up with already existing email.
@@ -51,7 +55,7 @@ public class UserService {
             System.out.println("email taken");
             return false;
         }else{
-            repository.save(user);
+           // repository.save(user);
             return true;
         }
     }

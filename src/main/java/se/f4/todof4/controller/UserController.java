@@ -18,10 +18,12 @@ public class UserController {
 
     @Autowired
     private UserService service;
+
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody User user) {
         return new ResponseEntity<>(service.createUser(user), HttpStatus.OK);
     }
+
     @GetMapping("/get/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable int userId) {
         try{
