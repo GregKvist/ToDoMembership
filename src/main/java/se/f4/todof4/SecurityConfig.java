@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().and()
                 .csrf().disable() // För att kunna köra POST/PUT/DELETE via postman måste denna vara aktiv.
                 .authorizeRequests()
+              //.antMatchers("/users", "/delete**", "/showFormForUpdate/**").authenticated()
                 .antMatchers("/users").authenticated()
                 .anyRequest().permitAll()
                 .and()

@@ -68,6 +68,23 @@ public class UserControllerTL {
         service.createUser(user);
         return"redirect:/users";
     }
+
+    // Testar POST med email check/Cicci
+    @PostMapping("/saveUserEmailCheck")
+    public String saveUserWithEmailCheck(@ModelAttribute("user") User user){
+        //save user to database
+        if(service.createUserEmailCheck(user)){
+        return"redirect:/users";
+        }else{
+            return "redirect:/nonvalid-email";
+        }
+    }
+
+    @GetMapping("/nonvalid-email")
+    public String nonValidEmail(){
+        return "nonvalid-email.html";
+    }
+
     @GetMapping("/showFormForUpdate/{id}")
     public String showFOrmForUpdate(@PathVariable (value= "id") int id, Model model){
 

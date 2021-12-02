@@ -6,7 +6,6 @@ import javax.persistence.Id;
 
 
 @Entity
-
 public class User {
     @Id
     @GeneratedValue
@@ -14,8 +13,6 @@ public class User {
     private String name;
     private String email;
     private String password;
-
-
 
     public User() {
     }
