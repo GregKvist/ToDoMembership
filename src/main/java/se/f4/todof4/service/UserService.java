@@ -1,13 +1,13 @@
 package se.f4.todof4.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.f4.todof4.entity.User;
 import se.f4.todof4.repository.UserRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,12 +17,32 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public User createUser(User user) {
+    @PostConstruct
+    private void createDefaultUser() {
+        User exist = repository.findByEmail("admin@g4.com");
+        if(exist == null) {
+            System.out.println("------- Creating a default user ------");
+            User user = new User("admin", "admin@g4.com", "password");
+            user = encodedPassword(user);
+            repository.save(user);
+        }else {
+            System.out.println("------- Default user exist ------");
+            System.out.println("username: admin@g4.com\n password: password");
+        }
+    }
+
+    public User encodedPassword(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        return user;
+    }
+
+    public User createUser(User user) {
+        user = encodedPassword(user);
         return repository.save(user);
     }
+
 
     public List<User> getUsers() {
         return repository.findAll();
