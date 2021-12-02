@@ -69,24 +69,30 @@ public class UserController {
     public @ResponseBody
     ResponseEntity<Void> deleteUser(@PathVariable("id") String stringId) {
         int id;
+        HttpHeaders httpHeader = new HttpHeaders();
         try {
             id = Integer.parseInt(stringId);
         } catch (NumberFormatException e) {
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            httpHeader.add("Error message", "the supplied user id = '" + stringId + "' is not parseable as an integer");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(httpHeader).build();
         }
 
         if (service.deleteUser(id).isPresent()) {
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            httpHeader.add("description", "the user id = " + stringId + " is successfully deleted");
+            return ResponseEntity.status(HttpStatus.OK).headers(httpHeader).build();
         } else {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+            httpHeader.add("Error message", "the supplied user id = " + stringId + " does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeader).build();
         }
     }
 
     @DeleteMapping("/delete_all")
     public @ResponseBody
     ResponseEntity<Void> deleteUsers() {
+        HttpHeaders httpHeader = new HttpHeaders();
         service.deleteUsers();
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        httpHeader.add("description", "all users have successfully been deleted");
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeader).build();
     }
 
     @PutMapping(value = "/update-by-id/{id}", produces = {"application/json", "application/xml"})
