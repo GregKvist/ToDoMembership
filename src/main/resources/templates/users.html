@@ -32,6 +32,7 @@
             <td th:text="${user.email}"></td>
             <td th:text="${user.password}"></td>
             <td> <a th:href="@{showFormForUpdate/{id}(id=${user.id})}" class="btn btn-primary">Update</a></td>
+            <td> <a th:href="@{deleteUser/{id}(id=${user.id})}" class="btn btn-primary">Delete</a></td>
 
 
         </tr>

@@ -47,7 +47,6 @@ public class UserControllerTL {
             return "error";
         }
         model.addAttribute("deleteUser", service.deleteUser(id));
-
         return "delete-user";
     }
 
