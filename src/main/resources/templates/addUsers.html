@@ -15,13 +15,13 @@
 
       <form action="#" th:action="@{/saveUser}" th:object = "${user}" method = "POST">
       <input type = "text" required th:field="*{name}"
-             placeholder="User name" class="form-control mb-4 col-4">
+             placeholder="Name" class="form-control mb-4 col-4">
 
       <input type = "email"  required th:field="*{email}"
-             placeholder="User Email" class="form-control mb-4 col-4">
+             placeholder="Email" class="form-control mb-4 col-4">
 
       <input type = "password"  minlength="3" required th:field="*{password}"
-             placeholder="User Password" class="form-control mb-4 col-4">
+             placeholder="Password" class="form-control mb-4 col-4">
 
       <button type="submit" class="btn btn-info col-2" th:text="${title}"></button>
 
