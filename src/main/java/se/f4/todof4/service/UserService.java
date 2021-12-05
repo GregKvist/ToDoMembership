@@ -40,7 +40,6 @@ public class UserService {
 
 
     public User createUser(User user) {
-
        if(createUserEmailCheck(user)) {
            user = encodedPassword(user);
            return repository.save(user);
@@ -53,11 +52,9 @@ public class UserService {
     public boolean createUserEmailCheck(User user){
         //            Check to see if email is already in use by other user
         Optional<User> userOptional = repository.findUserByEmail(user.getEmail());
-        User checkUser = getUserById(user.getId());
-        if(checkUser.getEmail().equals(user.getEmail())) {
-            return true;
 
-        }else {
+        User checkUser = getUserById(user.getId());
+        if(checkUser == null) {
             if (userOptional.isPresent()) {
                 System.out.println("email taken");
                 return false;
@@ -65,8 +62,14 @@ public class UserService {
                 return true;
             }
 
+        } else if(userOptional.isPresent() && !(checkUser.getEmail().equals(user.getEmail()))) {
+            System.out.println("email taken");
+            return false;
+        }else{
+            return true;
         }
-    }
+        }
+
 
     public List<User> getUsers() {
         return repository.findAll();
@@ -79,13 +82,12 @@ public class UserService {
     }
 
     public User getUserById(int id){
-
-            //  Optional<User> optional = repository.findById(id);
+        if(id == 0) {
+        return null;
+        }else {
             User user = repository.findById(id).get();
-
-            return user;
-
-
+                return user;
+        }
     }
 
     public Optional<User> deleteUser(int id) {

@@ -28,7 +28,6 @@ public class UserController {
             header.add("Error message", "Given e-mail address is not valid.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).headers(header).build();
             }else{
-               service.createUser(user);
                User body = service.getUserById(user.getId());
                header.add("Description", "Success! User created!");
                return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
@@ -110,7 +109,7 @@ public class UserController {
             User body = service.getUserById(id);
             return ResponseEntity.status(HttpStatus.OK).headers(header).body(body);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 }
