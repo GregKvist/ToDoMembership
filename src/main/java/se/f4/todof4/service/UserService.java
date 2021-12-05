@@ -38,6 +38,7 @@ public class UserService {
         return user;
     }
 
+
     public User createUser(User user) {
 
        if(createUserEmailCheck(user)) {
@@ -52,11 +53,18 @@ public class UserService {
     public boolean createUserEmailCheck(User user){
         //            Check to see if email is already in use by other user
         Optional<User> userOptional = repository.findUserByEmail(user.getEmail());
-        if (userOptional.isPresent()) {
-            System.out.println("email taken");
-            return false;
-        }else{
+        User checkUser = getUserById(user.getId());
+        if(checkUser.getEmail().equals(user.getEmail())) {
             return true;
+
+        }else {
+            if (userOptional.isPresent()) {
+                System.out.println("email taken");
+                return false;
+            }else{
+                return true;
+            }
+
         }
     }
 
@@ -128,6 +136,9 @@ public class UserService {
                 // Set the new password
                 user.setPassword(password);
 
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String encodedPassword = passwordEncoder.encode(user.getPassword());
+                user.setPassword(encodedPassword);
                 }// End brackets for password control
 
             return true;
